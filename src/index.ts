@@ -42,11 +42,14 @@ const onMouseMove = ({ offsetX: x, offsetY: y }: MouseEvent) => {
 
   if (distance > MAX_DISTANCE) {
     trails.push(new Trail(point));
-    svg.appendChild(createText('G', { fill: 'blue', ...point }));
+    svg.appendChild(createText('G', { fill: '#4285F4', ...point }));
   } else {
     trail!.add(point);
     svg.appendChild(
-      createText('o', { fill: trail!.size() % 2 ? 'yellow' : 'red', ...point })
+      createText('o', {
+        fill: trail!.size() % 2 ? '#FBBC05' : '#EA4335',
+        ...point,
+      })
     );
   }
 };
