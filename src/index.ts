@@ -1,17 +1,17 @@
-import Trail from "./Trail";
+import Trail from './Trail';
 
-import "sanitize.css";
+import 'sanitize.css';
 
-import "./index.scss";
+import './index.scss';
 
 const MIN_DISTANCE = 10;
 const MAX_DISTANCE = 50;
 
-const svg = document.getElementById("floor")!;
+const svg = document.getElementById('floor')!;
 const trails: Trail[] = [];
 
 const createSvgElement = (tag: string, attributes: any) => {
-  const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
   for (const k in attributes) {
     e.setAttribute(k, attributes[k]);
   }
@@ -19,7 +19,7 @@ const createSvgElement = (tag: string, attributes: any) => {
 };
 
 const createText = (text: string, attributes: any) => {
-  const e = createSvgElement("text", attributes);
+  const e = createSvgElement('text', attributes);
   e.textContent = text;
   return e;
 };
@@ -42,13 +42,13 @@ const onMouseMove = ({ offsetX: x, offsetY: y }: MouseEvent) => {
 
   if (distance > MAX_DISTANCE) {
     trails.push(new Trail(point));
-    svg.appendChild(createText("G", { fill: "blue", ...point }));
+    svg.appendChild(createText('G', { fill: 'blue', ...point }));
   } else {
     trail!.add(point);
     svg.appendChild(
-      createText("o", { fill: trail!.size() % 2 ? "yellow" : "red", ...point })
+      createText('o', { fill: trail!.size() % 2 ? 'yellow' : 'red', ...point })
     );
   }
 };
 
-svg.addEventListener("mousemove", onMouseMove);
+svg.addEventListener('mousemove', onMouseMove);

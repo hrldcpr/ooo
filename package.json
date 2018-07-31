@@ -5,13 +5,17 @@
   "scripts": {
     "start": "parcel src/index.html"
   },
+  "dependencies": {
+    "sanitize.css": "^6.0.0"
+  },
   "devDependencies": {
     "node-sass": "^4.9.2",
     "parcel-bundler": "^1.9.7",
     "prettier": "^1.14.0",
     "typescript": "^3.0.1"
   },
-  "dependencies": {
-    "sanitize.css": "^6.0.0"
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
