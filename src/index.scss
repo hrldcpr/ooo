@@ -3,18 +3,21 @@ body {
   height: 100vh;
   align-items: center;
   justify-content: center;
-  background: black;
+  background: #222;
 }
 
 #floor {
-  width: 80vh;
-  max-width: 80vw;
-  height: 80vh;
-  max-height: 80vw;
+  width: 90vw;
+  height: 90vh;
   background: white;
+  border-radius: 10px;
 
   text {
-    font-size: 24px;
+    font-size: 48px;
     font-weight: bold;
+  }
+
+  .gle {
+    transition: transform 0.2s;
   }
 }
