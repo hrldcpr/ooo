@@ -102,39 +102,30 @@ const closestAngle = ({
   return angle;
 };
 
-const onMouseMove = ({ offsetX: x, offsetY: y }: MouseEvent) => {
+svg.addEventListener('mouseenter', ({ offsetX: x, offsetY: y }: MouseEvent) => {
   const point = { x, y };
+  const edge = closestEdge(point);
 
-  const { trail, distance } = trails.reduce<{
-    trail?: Trail;
-    distance: number;
-  }>(
-    (min, trail) => {
-      const distance = trail.tailDistance(point);
-      return distance < min.distance ? { trail, distance } : min;
-    },
-    { distance: Infinity }
-  );
+  const g = createG(point, edge.angle);
+  const gle = createGle(point, edge.angle);
+  svg.appendChild(g);
+  svg.appendChild(gle);
+
+  trails.push(new Trail(point, gle, edge.angle));
+});
+
+svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
+  const point = { x, y };
+  const trail = trails[trails.length - 1];
+  const distance = trail.tailDistance(point);
 
   if (distance < MIN_DISTANCE) return;
 
-  const edge = closestEdge(point);
-
-  if (distance > MAX_DISTANCE) {
-    const g = createG(point, edge.angle);
-    const gle = createGle(point, edge.angle);
-    svg.appendChild(g);
-    svg.appendChild(gle);
-    trails.push(new Trail(point, gle, edge.angle));
-  } else {
-    trail!.add(point);
-    trail!.tailAngle = closestAngle({
-      angle: trail!.angle()!,
-      oldAngle: trail!.tailAngle,
-    });
-    svg.appendChild(createO(point, trail!.size() % 2 === 0));
-    moveGle(trail!.tail, point, trail!.tailAngle);
-  }
-};
-
-svg.addEventListener('mousemove', onMouseMove);
+  trail.add(point);
+  trail.tailAngle = closestAngle({
+    angle: trail.angle()!,
+    oldAngle: trail.tailAngle,
+  });
+  svg.appendChild(createO(point, trail.size() % 2 === 0));
+  moveGle(trail.tail, point, trail.tailAngle);
+});
