@@ -8,7 +8,6 @@ export default class {
   tail: SVGElement;
   tailAngle: number;
   private points: Point[];
-  private time: number;
 
   constructor(
     start: Point,
@@ -20,12 +19,10 @@ export default class {
     this.tail = tail;
     this.tailAngle = tailAngle;
     this.points = [start];
-    this.time = Date.now();
   }
 
   add = (point: Point) => {
     this.points.push(point);
-    this.time = Date.now();
   };
 
   angle = (): number | undefined => {
