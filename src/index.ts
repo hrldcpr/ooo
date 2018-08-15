@@ -5,9 +5,9 @@ import 'sanitize.css';
 import './index.scss';
 
 const MIN_DISTANCE = 40;
-const GLE_DISTANCE = 40;
-const MAX_DISTANCE = 80;
-const END_DISTANCE = 100;
+const GLE_DISTANCE = MIN_DISTANCE;
+const START_DISTANCE = MIN_DISTANCE;
+const FADE_DELAY = 10 * 1000; // ms
 
 const BLUE = '#4285F4';
 const RED = '#EA4335';
@@ -102,20 +102,28 @@ const closestAngle = ({
   return angle;
 };
 
-svg.addEventListener('mouseenter', ({ offsetX: x, offsetY: y }: MouseEvent) => {
-  const point = { x, y };
-  const edge = closestEdge(point);
-
-  const g = createG(point, edge.angle);
-  const gle = createGle(point, edge.angle);
-  svg.appendChild(g);
-  svg.appendChild(gle);
-
-  trails.push(new Trail(point, gle, edge.angle));
-});
-
 svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
   const point = { x, y };
+
+  if (
+    trails.length === 0 &&
+    x > START_DISTANCE &&
+    x < svg.clientWidth - START_DISTANCE &&
+    y > START_DISTANCE &&
+    y < svg.clientHeight - START_DISTANCE
+  ) {
+    const edge = closestEdge(point);
+
+    const g = createG(point, edge.angle);
+    const gle = createGle(point, edge.angle);
+    const container = createSvgElement('g');
+    container.appendChild(g);
+    container.appendChild(gle);
+    svg.appendChild(container);
+
+    trails.push(new Trail(point, container, gle, edge.angle));
+  }
+
   const trail = trails[trails.length - 1];
   const distance = trail.tailDistance(point);
 
@@ -126,6 +134,16 @@ svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
     angle: trail.angle()!,
     oldAngle: trail.tailAngle,
   });
-  svg.appendChild(createO(point, trail.size() % 2 === 0));
+  trail.g.appendChild(createO(point, trail.size() % 2 === 0));
   moveGle(trail.tail, point, trail.tailAngle);
+});
+
+svg.addEventListener('mouseleave', () => {
+  const trail = trails.pop();
+  if (!trail) return;
+
+  trail.g.classList.add('fading');
+  setTimeout(() => {
+    svg.removeChild(trail.g);
+  }, FADE_DELAY);
 });

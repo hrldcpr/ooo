@@ -17,6 +17,11 @@ body {
     font-weight: bold;
   }
 
+  .fading {
+    opacity: 0;
+    transition: opacity 10s;
+  }
+
   .gle {
     transition: transform 0.2s;
   }

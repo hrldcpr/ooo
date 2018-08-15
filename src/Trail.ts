@@ -4,12 +4,19 @@ interface Point {
 }
 
 export default class {
+  g: SVGElement;
   tail: SVGElement;
   tailAngle: number;
   private points: Point[];
   private time: number;
 
-  constructor(start: Point, tail: SVGElement, tailAngle: number) {
+  constructor(
+    start: Point,
+    g: SVGElement,
+    tail: SVGElement,
+    tailAngle: number
+  ) {
+    this.g = g;
     this.tail = tail;
     this.tailAngle = tailAngle;
     this.points = [start];
