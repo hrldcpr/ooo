@@ -122,13 +122,16 @@ const closestAngle = ({
 svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
   const point = { x, y };
 
-  if (
-    trails.length === 0 &&
-    x > START_DISTANCE &&
-    x < svg.clientWidth - START_DISTANCE &&
-    y > START_DISTANCE &&
-    y < svg.clientHeight - START_DISTANCE
-  ) {
+  if (trails.length === 0) {
+    if (
+      x < START_DISTANCE ||
+      svg.clientWidth - x < START_DISTANCE ||
+      y < START_DISTANCE ||
+      svg.clientHeight - y < START_DISTANCE
+    ) {
+      return;
+    }
+
     const edge = closestEdge(point);
 
     const g = createG(point, edge.angle);
