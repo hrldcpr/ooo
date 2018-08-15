@@ -25,6 +25,10 @@ export default class {
     this.points.push(point);
   };
 
+  pop = () => {
+    this.points.pop();
+  };
+
   angle = (): number | undefined => {
     if (this.points.length < 2) return;
     const [a, b] = this.points.slice(-2);

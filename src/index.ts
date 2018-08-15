@@ -6,7 +6,8 @@ import './index.scss';
 
 const G_DISTANCE = 50;
 const O_DISTANCE = 40;
-const START_DISTANCE = 40;
+const GLE_LENGTH = 74;
+const EDGE_DISTANCE = 40;
 const FADE_DELAY = 10 * 1000; // ms
 
 const svg = document.getElementById('floor')!;
@@ -124,10 +125,10 @@ svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
 
   if (trails.length === 0) {
     if (
-      x < START_DISTANCE ||
-      svg.clientWidth - x < START_DISTANCE ||
-      y < START_DISTANCE ||
-      svg.clientHeight - y < START_DISTANCE
+      x < EDGE_DISTANCE ||
+      svg.clientWidth - x < EDGE_DISTANCE ||
+      y < EDGE_DISTANCE ||
+      svg.clientHeight - y < EDGE_DISTANCE
     ) {
       return;
     }
@@ -155,6 +156,21 @@ svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
     angle: trail.angle()!,
     oldAngle: trail.tailAngle,
   });
+
+  const tailPoint = {
+    x: point.x + GLE_LENGTH * Math.cos(trail.tailAngle),
+    y: point.y + GLE_LENGTH * Math.sin(trail.tailAngle),
+  };
+  if (
+    tailPoint.x < EDGE_DISTANCE ||
+    svg.clientWidth - tailPoint.x < EDGE_DISTANCE ||
+    tailPoint.y < EDGE_DISTANCE ||
+    svg.clientHeight - tailPoint.y < EDGE_DISTANCE
+  ) {
+    trail.pop();
+    return;
+  }
+
   trail.g.appendChild(createO(point, trail.size() % 2 === 0));
   moveGle(trail.tail, point, trail.tailAngle);
 });
