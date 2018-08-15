@@ -8,26 +8,14 @@ const G_DISTANCE = 50;
 const O_DISTANCE = 40;
 const GLE_LENGTH = 74;
 const EDGE_DISTANCE = 40;
+const START_DISTANCE = 80;
 const FADE_DELAY = 10 * 1000; // ms
-
-const svg = document.getElementById('floor')!;
-const trails: Trail[] = [];
 
 const createSvgElement = (tag: string, attributes?: any) => {
   const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
   for (const k in attributes) {
     e.setAttribute(k, attributes[k]);
   }
-  return e;
-};
-
-const createText = (text: string, attributes: any) => {
-  const e = createSvgElement('text', {
-    'text-anchor': 'middle',
-    'alignment-baseline': 'middle',
-    ...attributes,
-  });
-  e.textContent = text;
   return e;
 };
 
@@ -86,6 +74,10 @@ const moveGle = (
   gle.style.transform = `translate(${x}px, ${y}px) rotate(${angle}rad) translate(-120px, -40px)`;
 };
 
+const svg = document.getElementById('floor')!;
+const trails: Trail[] = [];
+let enabled = false;
+
 const closestEdge = ({ x, y }: { x: number; y: number }) => {
   const right = svg.clientWidth - x;
   const bottom = svg.clientHeight - y;
@@ -121,6 +113,7 @@ const closestAngle = ({
 };
 
 svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
+  if (!enabled) return;
   const point = { x, y };
 
   if (trails.length === 0) {
@@ -132,6 +125,8 @@ svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
     ) {
       return;
     }
+
+    document.getElementById('note').classList.add('fading');
 
     const edge = closestEdge(point);
 
@@ -176,6 +171,8 @@ svg.addEventListener('mousemove', ({ offsetX: x, offsetY: y }: MouseEvent) => {
 });
 
 svg.addEventListener('mouseleave', () => {
+  enabled = true;
+
   const trail = trails.pop();
   if (!trail) return;
 
