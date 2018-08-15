@@ -32,8 +32,8 @@ const createText = (text: string, attributes: any) => {
 
 const createG = ({ x, y }: { x: number; y: number }, angle: number) =>
   createSvgElement('path', {
-    transform: `translate(${x}, ${y - 8}) rotate(${(angle * 180) /
-      Math.PI}) translate(-29, -29)`,
+    transform: `translate(${x}, ${y}) rotate(${(angle * 180) /
+      Math.PI}) translate(-29, -37)`,
     fill: '#4285F4',
     d:
       'M29.95,59.05C13.68,59.05,0,45.8,0,29.52S13.68,0,29.95,0c9,0,15.41,3.53,20.23,8.14l-5.69,5.69c-3.46-3.24-8.14-5.76-14.55-5.76c-11.88,0-21.17,9.58-21.17,21.46c0,11.88,9.29,21.46,21.17,21.46c7.71,0,12.1-3.1,14.91-5.9c2.3-2.3,3.82-5.65,4.39-10.18h-19.3v-8H57.1c0.29,1.44,0.43,3.13,0.43,5.01c0,6.05-1.66,13.54-6.99,18.87C45.36,56.17,38.74,59.05,29.95,59.05z',
