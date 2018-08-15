@@ -23,6 +23,19 @@ body {
   }
 
   .gle {
-    transition: transform 0.2s;
+    transition: transform 0.3s;
+  }
+
+  .o {
+    animation: fadein 0.6s;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
